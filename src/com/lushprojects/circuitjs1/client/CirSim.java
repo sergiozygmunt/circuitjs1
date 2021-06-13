@@ -19,82 +19,90 @@
 
 package com.lushprojects.circuitjs1.client;
 
+import static com.google.gwt.event.dom.client.KeyCodes.KEY_A;
+import static com.google.gwt.event.dom.client.KeyCodes.KEY_BACKSPACE;
+import static com.google.gwt.event.dom.client.KeyCodes.KEY_C;
+import static com.google.gwt.event.dom.client.KeyCodes.KEY_D;
+import static com.google.gwt.event.dom.client.KeyCodes.KEY_DELETE;
+import static com.google.gwt.event.dom.client.KeyCodes.KEY_ENTER;
+import static com.google.gwt.event.dom.client.KeyCodes.KEY_ESCAPE;
+import static com.google.gwt.event.dom.client.KeyCodes.KEY_SPACE;
+import static com.google.gwt.event.dom.client.KeyCodes.KEY_V;
+import static com.google.gwt.event.dom.client.KeyCodes.KEY_X;
+import static com.google.gwt.event.dom.client.KeyCodes.KEY_Y;
+import static com.google.gwt.event.dom.client.KeyCodes.KEY_Z;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
 // GWT conversion (c) 2015 by Iain Sharp
 
 // For information about the theory behind this, see Electronic Circuit & System Simulation Methods by Pillage
 // or https://github.com/sharpie7/circuitjs1/blob/master/INTERNALS.md
 
 import java.util.Vector;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.lang.Math;
 
-import com.gargoylesoftware.htmlunit.javascript.host.Console;
 import com.google.gwt.canvas.client.Canvas;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CellPanel;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RootLayoutPanel;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.Context2d.LineCap;
+import com.google.gwt.core.client.Callback;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.ScriptInjector;
+import com.google.gwt.dom.client.CanvasElement;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.ContextMenuEvent;
+import com.google.gwt.event.dom.client.ContextMenuHandler;
+import com.google.gwt.event.dom.client.DoubleClickEvent;
+import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
-import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
-import com.google.gwt.event.dom.client.ContextMenuEvent;
-import com.google.gwt.event.dom.client.ContextMenuHandler;
-import com.google.gwt.user.client.Event.NativePreviewEvent;
-import com.google.gwt.user.client.Event.NativePreviewHandler;
+import com.google.gwt.event.dom.client.MouseUpEvent;
+import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.event.dom.client.MouseWheelEvent;
 import com.google.gwt.event.dom.client.MouseWheelHandler;
-import com.google.gwt.event.logical.shared.CloseEvent;
-import com.google.gwt.core.client.Callback;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.ScriptInjector;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
-import com.google.gwt.user.client.ui.MenuBar;
-import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.DoubleClickHandler;
-import com.google.gwt.event.dom.client.DoubleClickEvent;
-import com.google.gwt.dom.client.CanvasElement;
-import com.google.gwt.dom.client.Document;
-import com.google.gwt.dom.client.NativeEvent;
-import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.storage.client.Storage;
-import com.google.gwt.user.client.ui.PopupPanel;
-import static com.google.gwt.event.dom.client.KeyCodes.*;
-import com.google.gwt.user.client.ui.Frame;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Event.NativePreviewEvent;
+import com.google.gwt.user.client.Event.NativePreviewHandler;
+import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.ClosingEvent;
 import com.google.gwt.user.client.Window.Navigator;
-import com.google.gwt.event.logical.shared.CloseHandler;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CellPanel;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.Frame;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.MenuBar;
+import com.google.gwt.user.client.ui.MenuItem;
+import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 public class CirSim implements MouseDownHandler, MouseMoveHandler, MouseUpHandler,
 ClickHandler, DoubleClickHandler, ContextMenuHandler, NativePreviewHandler,

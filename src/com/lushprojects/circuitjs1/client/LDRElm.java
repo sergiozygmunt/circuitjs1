@@ -1,10 +1,10 @@
 package com.lushprojects.circuitjs1.client;
 
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.Command;
 import com.google.gwt.canvas.dom.client.CanvasGradient;
 import com.google.gwt.event.dom.client.MouseWheelEvent;
 import com.google.gwt.event.dom.client.MouseWheelHandler;
+import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.ui.Label;
 
 /*Bill Collis - June 2015 */
 

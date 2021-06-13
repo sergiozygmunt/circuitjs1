@@ -1,8 +1,8 @@
 package com.lushprojects.circuitjs1.client;
 
-import java.util.Vector;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.Vector;
 
 // Circuit element made up of a composition of other circuit elements
 // Using this will be (relatively) inefficient in terms of simulation performance because

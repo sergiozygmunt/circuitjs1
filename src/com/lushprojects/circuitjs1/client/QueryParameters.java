@@ -21,6 +21,7 @@ package com.lushprojects.circuitjs1.client;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import com.google.gwt.http.client.URL;
 
 public class QueryParameters

@@ -18,11 +18,10 @@
 */
 
 package com.lushprojects.circuitjs1.client;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
 
 class EditInfo {
     	// mn/mx were used in the java version to create sliders in the edit dialog but we don't do that in the javascript version, so this
